@@ -138,9 +138,9 @@ exports.delete = {
       errors.invalid('id'),
       errors.notFound('Brick')
     ],
-    'preliminaryCallbacks': [
-      passport.authenticate('token', { session: false } )
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', { session: false } )
+    // ],
     'nickname': 'delete'
   },
   'action': function (req,res) {
@@ -179,9 +179,9 @@ exports.put = {
       errors.invalid('id'),
       errors.notFound('Brick')
     ],
-    'preliminaryCallbacks': [
-      passport.authenticate('token', { session: false })
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', { session: false })
+    // ],
     'nickname': 'update'
   },
   'action': function(req, res) {
@@ -229,9 +229,9 @@ exports.post = {
     'errorResponses': [
       errors.invalid('status')
     ],
-    'preliminaryCallbacks': [
-      passport.authenticate('token', { session: false })
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', { session: false })
+    // ],
     'nickname': 'create'
   },
   'action': function(req, res) {
