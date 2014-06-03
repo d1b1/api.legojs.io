@@ -1,0 +1,431 @@
+{
+    "defines": {
+        "constants": {
+            "name": "localhost:3000",
+            "description": "",
+            "protocal": "http",
+            "host": "localhost:3000",
+            "port": "3000",
+            "requestFormat": "json"
+        },
+        "response-headers": [
+            "X-RateLimit-Limit",
+            "X-RateLimit-Remaining",
+            "X-Oauth-Scopes",
+            "Link"
+        ]
+    },
+    "user": {
+        "bricks": {
+            "url": "/user/:id/bricks",
+            "method": "GET",
+            "params": {
+                "id": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User ID"
+                }
+            }
+        },
+        "current": {
+            "url": "/user/current",
+            "method": "GET",
+            "params": {}
+        },
+        "activity": {
+            "url": "/user/:user/activity",
+            "method": "GET",
+            "params": {
+                "user": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User ID"
+                }
+            }
+        },
+        "search": {
+            "url": "/user/search",
+            "method": "GET",
+            "params": {
+                "term": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Search Term"
+                },
+                "id": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User ID"
+                },
+                "name": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Users Full Name"
+                },
+                "email": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Email Address"
+                },
+                "city": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "City"
+                },
+                "state": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "State"
+                },
+                "country": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Country"
+                },
+                "type": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Account Type"
+                },
+                "username": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Username"
+                },
+                "status": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Account Status (Active, Inactive)"
+                },
+                "provider": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "OAuth Provider Name (twitter, facebook etc.)"
+                },
+                "providerid": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "OAuth Provider ID."
+                },
+                "twitter": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Twitter Username"
+                },
+                "facebook": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Facebook Username"
+                },
+                "lat": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Latitude"
+                },
+                "long": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Longitude"
+                },
+                "radius": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Radius (Feet)"
+                },
+                "limit": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Limit the number of Users returns."
+                },
+                "page": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "(Optiona) Current Page"
+                },
+                "size": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "(Optional) Page Size"
+                },
+                "fields": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Comma separated list of fields to return."
+                },
+                "format": {
+                    "type": "String",
+                    "required": false,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Type of content returns, Raw, Statistics (Default is Raw)"
+                }
+            }
+        },
+        "get": {
+            "url": "/user/:id",
+            "method": "GET",
+            "params": {
+                "id": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User ID"
+                }
+            }
+        },
+        "create": {
+            "url": "/user",
+            "method": "POST",
+            "params": {
+                "body": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Account Data"
+                }
+            }
+        },
+        "delete": {
+            "url": "/user/:id",
+            "method": "DELETE",
+            "params": {
+                "id": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User ID"
+                }
+            }
+        },
+        "oauth": {
+            "url": "/user/:id/provider",
+            "method": "PUT",
+            "params": {
+                "id": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User ID"
+                },
+                "body": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User Account to Update."
+                }
+            }
+        },
+        "update": {
+            "url": "/user/:id",
+            "method": "PUT",
+            "params": {
+                "id": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User ID"
+                },
+                "body": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "User Account to Update."
+                }
+            }
+        },
+        "lookup": {
+            "url": "/user/social/lookup",
+            "method": "PUT",
+            "params": {
+                "body": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Data for Social Lookup"
+                }
+            }
+        }
+    },
+    "brick": {
+        "search": {
+            "url": "/brick/search",
+            "method": "GET",
+            "params": {
+                "name": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Name"
+                },
+                "color": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "color"
+                },
+                "category": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Category Name"
+                },
+                "designid": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Design ID"
+                },
+                "elementid": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Element ID"
+                },
+                "page": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Optional - Current Page"
+                },
+                "size": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Optional - Page Size"
+                },
+                "fields": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Fields to return in the results (Required for Format = Statictics)"
+                },
+                "limit": {
+                    "type": "String",
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Limit the Results returned."
+                }
+            }
+        },
+        "get": {
+            "url": "/brick/:id",
+            "method": "GET",
+            "params": {
+                "id": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Brick ID"
+                }
+            }
+        },
+        "delete": {
+            "url": "/brick/:id",
+            "method": "DELETE",
+            "params": {
+                "id": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Brick ID"
+                }
+            }
+        },
+        "update": {
+            "url": "/brick/:id",
+            "method": "PUT",
+            "params": {
+                "id": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Brick ID"
+                },
+                "body": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Body"
+                }
+            }
+        },
+        "create": {
+            "url": "/brick",
+            "method": "POST",
+            "params": {
+                "body": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Brick Object to create."
+                }
+            }
+        }
+    },
+    "authenticate": {
+        "accesstoken": {
+            "url": "/authenticate/accesstoken",
+            "method": "POST",
+            "params": {
+                "body": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Username & Password Request."
+                }
+            }
+        },
+        "byprovider": {
+            "url": "/authenticate/byprovider",
+            "method": "POST",
+            "params": {
+                "body": {
+                    "type": "String",
+                    "required": true,
+                    "validation": "",
+                    "invalidmsg": "",
+                    "description": "Provider and Provider ID"
+                }
+            }
+        }
+    }
+}

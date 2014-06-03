@@ -1,0 +1,88 @@
+extends layout
+
+block header
+
+  link(href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700', rel='stylesheet')
+  link(href='/assets/css/hightlight.default.css', media='screen', rel='stylesheet')
+  link(href='/assets/css/screen.css', media='screen', rel='stylesheet', type='text/css')
+
+  script(src='/assets/lib/jquery-1.8.0.min.js').
+  script(src='/assets/lib/jquery.slideto.min.js').
+  script(src='/assets/lib/jquery.wiggle.min.js').
+  script(src='/assets/lib/jquery.ba-bbq.min.js').
+  script(src='/assets/lib/handlebars-1.0.rc.1.js').
+  script(src='/assets/lib/underscore-min.js').
+  script(src='/assets/lib/backbone-min.js').
+  script(src='/assets/lib/swagger.js').
+  script(src='/assets/swagger-ui.js').
+  script(src='/assets/lib/highlight.7.3.pack.js').
+
+  <!-- Include signing libraries -->
+  script(src='/assets/querystring.js').
+  script(src='/assets/oauth.js').
+  script(src='/assets/authutils.js').
+  
+  style.
+    .swagger-ui-wrap {
+        max-width: 960px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .icon-btn {
+        cursor: pointer;
+    }
+
+    #message-bar {
+        min-height: 30px;
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    .message-success {
+        color: #89BF04;
+    }
+
+    .message-fail {
+        color: #cc0000;
+    }
+
+  script(type='text/javascript').
+    $(function () {
+      window.swaggerUi = new SwaggerUi({
+        discoveryUrl:'/api-docs',
+        apiKey:'',
+        dom_id:'swagger-ui-container',
+        supportHeaderParams: false,
+        supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
+        onComplete: function(swaggerApi, swaggerUi){
+          if(console) {
+            // console.log('Loaded SwaggerUI');
+            // console.log(swaggerApi);
+            // console.log(swaggerUi);
+          }
+          $('pre code').each(function(i, e) { hljs.highlightBlock(e)} );
+        },
+        onFailure: function(data) {
+          if(console) {
+            console.log("Unable to Load SwaggerUI");
+            console.log(data);
+          }
+        },
+        docExpansion: 'none'
+      });
+
+      window.swaggerUi.load();
+
+      // Load header form fields from local storage.
+      $('#input_baseUrl').val(localStorage.getItem('discoveryUrl'));
+      $('#input_consumerKey').val(localStorage.getItem('consumerKey'));
+      $('#input_consumerSecret').val(localStorage.getItem('consumerSecret'));
+      $('#input_accessToken').val(localStorage.getItem('accessToken'));
+      $('#input_tokenSecret').val(localStorage.getItem('tokenSecret'));    
+    });
+
+block content
+
+
+  #swagger-ui-container

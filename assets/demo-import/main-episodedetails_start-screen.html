@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> 
+<html lang="en" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>ComposerPro - Episode Details</title>
+        
+        <link href="/favicon.ico" rel="shortcut icon">
+        
+        <link rel="stylesheet" href="../css/custom/jquery-ui-1.8.19.custom.css">
+        <link rel="stylesheet" href="../css/global/normalize.css">
+        <link rel="stylesheet" href="../css/screen.css">
+        <link rel="stylesheet" href="../css/iconfont.css" />
+        
+        <style>
+        
+        .playlist-meta,
+        .playlist-time,
+        .playlist-adv,
+        .playlist-adv span,
+        .show-options,
+        .search-helper {margin:0;padding:0;}
+        
+        /*[class^="playlist-"]  {margin:0;padding:0;}*/
+        
+        .playlist-meta {float:left;width:100%; }
+        
+        .playlist-time {float:left;}
+        
+        .playlist-adv:hover {color:#06c;cursor: pointer; }
+        
+        .playlist-adv {float:right;list-style:none;}
+        
+        .playlist-options {position: relative;}
+        
+        .playlist-adv {
+        text-align:right;
+        width: 80px;
+        cursor: pointer;
+        padding-right: 7px;
+        white-space: nowrap;
+        }
+        	
+        .playlist-adv span {font-size: 75%;}
+        
+        .show-options {
+        position:absolute;
+        right:-2px;
+        top: 18px;
+        z-index:100;
+        list-style:none;
+        background:#FFF;
+        text-align:right;
+        border:1px solid #d6d6d6;
+        border-radius:3px;
+        box-shadow:1px 3px 5px rgba(0,0,0,.15);
+        }
+        
+        .show-options li {
+        width:90px;
+        color:#666;
+        padding-top: .1rem;
+        padding-bottom: .1rem;
+        padding-right: 7px;
+        white-space: nowrap; }
+        	.show-options li:first-child {margin-top: .25rem;}
+        	.show-options li:last-child {margin-bottom: .25rem;}
+        
+        .show-options li:hover {color:#06C;cursor:pointer;background:#c8d8ed;}
+        
+        .playlist-area {
+        width:99.4%;
+        background:#c8d8ed;
+        border-style:dotted;
+        border-top-color: #aec6e5;
+        border-right-color: #aec6e5;
+        border-bottom-color: transparent;
+        border-left-color: #aec6e5;}
+        
+	        .import-playlist {
+		    width:99.8%;
+	        background:#FFF;
+	        border-style:solid;
+	        border-top-width: 0;
+	        border-right-width: 1px;
+	        border-bottom-width: 1px;
+	        border-left-width: 1px;
+	        border-right-color: #d6d6d6;
+	        border-bottom-color: #d6d6d6;
+	        border-left-color: #d6d6d6;  
+	        }
+        
+        
+        .search-helper {
+        padding:2.25rem;
+        font-size:1.2rem; 
+        text-align:center;
+        font-family:OpenSans-bold;
+        color:#073a78;
+        text-shadow: -1px -1px 1px #FFF;}
+        
+        
+        </style>
+        
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <script src="../js/modernizr.js"></script>
+        <!--[if lte IE 7]><script src="../js/lte-ie7.js"></script><![endif]-->
+        
+		<script>
+		  $(document).ready(function () {
+		  	$(".playlist-adv").click( function (e) {
+		      $(".show-options").show();
+		      
+		      e.stopPropagation();
+		      
+		      $(document).click( function () {
+		      	$(".show-options").hide();
+		      });
+		      
+		    });	  	
+		  });
+		  
+		</script>
+        
+    </head>
+    <body>
+	<header role="banner">
+		<div>
+			<div id="sysheader">
+				<div class="wrap">
+				
+				<hgroup>
+				<h1 id="logo">Composer <span>Pro</span></h1>
+				</hgroup>
+				
+				<nav>
+					<ul class="quicklinks">
+						<li><a href="#widgets">Widgets</a></li>
+						<li><a href="http://info.ds.npr.org/support">Support</a></li>
+						<li class="logout"><a href="#logout">Logout</a></li>
+					</ul>
+				</nav>
+				
+				</div>
+			</div>
+			
+			<div id="primaryheader">
+				<div class="wrap">
+				
+					<div class="streamselector">
+						<h2>WTEST HD 1</h2>
+						<div class="availablestreams" hidden=""><a href="#">View available streams</span></a></div>
+					</div>
+					
+					<nav>
+						<ul class="mainnav">
+							<li><a href="#">Calendar</a></li>
+							<li><a href="#">Programs</a></li>
+							<li><a href="#">Episodes</a></li>
+						</ul>
+					</nav>
+				
+				</div>
+			</div>
+			
+			<div id="onairheader" hidden>
+				<div class="wrap">
+				<span>Now Playing</span> <a href="#">All Things Considered</a>
+				</div>
+			</div>
+		</div>
+	</header>
+		<!-- /header -->
+				
+	<section role="main">
+		<div class="wrap">
+		
+		<h1>Episode Details</h1>			
+			<div class="actions"><span aria-hidden="true" class="ico-checkmark"> Autosaved on 10/15/2012  3:21:16 PM</span></div>
+		
+			<div class="detail">
+				<div>
+					<div class="episode-details">
+					  <section class="basicinfo">
+					    <h2>Orlando Blues <span><i>hosted by</i> Joe Orlando</span></h2>
+						 <ul class="airtimeinfo">
+						    <li>Thursday, October 25, 2012</li>
+						    <li>12:00 AM - 2:00 AM</li>
+						 </ul>
+					  </section>
+					  <ul>
+					    <li><!--episode nav--></li>
+					  </ul>
+					</div>
+				</div>
+			</div>			
+<div class="playlist">
+<div class="wrap">
+<div class="playlist-meta">
+
+	<p class="playlist-time">0 songs (00:00:00)</p>
+	
+	<div class="playlist-options">
+		<p class="playlist-adv">Advanced <span>&#9660;</span></p>
+		<ul class="show-options" style="display:none;">
+			<li class="playlist-import">Import CSV</li>
+			<li class="playlist-clear">Clear Playlist</li>
+			<li class="playlist-insert-break">Insert Break</li>
+		</ul>
+	</div>
+	
+</div><!-- /playlist-meta formerly .playlist-time -->
+<div class="clearfix"></div>
+
+<div class="playlist-area">
+<p class="search-helper">Use the search bar below to add songs</p>
+
+<ul class="playlist-songs sortable ui-sortable"></ul>
+
+</div>
+</div>
+			
+			<!--div class="insert-break clearfix">
+			<div>
+			<div class="break-time clearfix">
+			  <div class="timegroup">
+			  	<span>Break Duration:</span>
+			    <input type="number" class="minutes" placeholder="0" min="0" max="1440" autofocus="">
+			    <input type="number" class="seconds" placeholder="00" min="0" max="59">
+			  </div>
+			  <ul class="song-actions">
+			    <li class="break-text ico-plus"> Add Break</li>
+			    <li class="edit button success add-break"> Add</li>
+			    <li class="cancel">Cancel &nbsp;<span aria-hidden="true" class="ico-cancel"></span></li>
+			  </ul>
+			</div>
+			
+			</div>
+			</div><!-- /insert-break -->
+									
+			<div class="search">
+				<div class="wrap">
+				
+					<div class="search-box">
+					  <form>
+					    <input type="search" name="search" class="search" placeholder="Search example: Louis Armstrong - Hello Dolly" autofocus="">
+					    <button type="submit" name="button_save" class="button primary search-submit" data-icon="0"></button>
+					  </form>
+					</div>
+					
+					<div class="search-meta">
+					  <p>Recent Search: <a href="#" class="recent-search">Louis Armstrong Hello Dolly</a></p>
+					</div>
+		
+					<div class="results"></div>
+					<div class="manual-add-contain"></div>
+				
+				</div><!-- /wrap -->
+			</div><!-- /search -->
+
+		</div>
+    </section><!-- /main -->
+
+	<footer role="contentinfo">
+		<div class="wrap">
+			<b>© 2012 NPR Digital Services</b> <!-- put Build ID here -->
+		</div>
+	</footer>
+		
+	</body>
+</html>

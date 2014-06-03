@@ -1,0 +1,1 @@
+window.appVersion = { "commit": "NA", "branch": "NA" }

@@ -1,0 +1,7 @@
+node_modules
+.settings-prod
+.DS_Store
+.settings-staging
+.settings-prod
+.env
+coverage

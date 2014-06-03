@@ -1,0 +1,168 @@
+doctype html
+html(lang="en")
+  head
+    title
+      | #{domain} - #{title}
+    meta(name='charset', content='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet', href='/assets/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/assets/bootstrap/css/bootstrap-responsive.min.css')
+
+    style.
+      hbody {
+        padding-top: 60px;
+        padding-bottom: 10px;
+      }
+
+    link(rel='stylesheet', href='/assets/css/modal.css')
+
+    script(src='/assets/js/jquery.min.js').
+    script(src='/assets/bootstrap/js/bootstrap.min.js').
+
+    block header
+
+  body
+    .navbar.navbar-inverse.navbar-fixed-top
+      .navbar-inner
+        .container
+          a(class="btn btn-navbar", data-toggle="collapse", data-target=".nav-collapse")
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a(class="brand", href='/') #{domain || 'api.legojs.io'}
+
+          div.nav-collapse.collapse.header
+            ul.nav
+              li
+                label(class="label", style="margin-top: 5px;") beta
+            - if (showkey)
+              #apiinfo
+
+              a(href='#myModal', role='button', class="btn pull-right", data-toggle='modal') Sign-in
+
+    div.container
+
+      br
+      br
+      br
+
+      block content
+
+      hr
+
+      footer
+        p &copy; legoJS.io 2014,  v: #{app.version || 'Unknown'}
+
+  .div(id="mySignin", class="form-signin-modal modallogin modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    .div(class="modal-header")
+      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") x
+      h3(id="myModalLabel") Sign-in
+
+    div.modal-body
+      form(id='loginform', class="form-horizontal", action="/login", method="post")
+
+        p Sign-in to manage your API Application Key.
+
+        input(type="text", class="span2", class="input-block-level brand", name="username", id="inputUsername2", placeholder="Username")
+        input(type="password", id="inputPassword2", class="input-block-level brand", name="password", placeholder="Password")
+
+        button(class="btn btn-primary", onclick="getLogin();", type="button") Login
+
+  .div(id="myModal", class="form-signin-modal modalAuthlogin modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    .div(class="modal-header")
+      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") x
+      h3(id="myModalLabel") Sign-in
+
+    div.modal-body
+      form(id='loginform', class="form-horizontal", action="/login", method="post")
+
+          p To learn more about this please review our
+            a(href="/authentication") 'How to Authenticate'.
+
+          p Enter your application ID and application secret to authenticate
+            to get started.
+
+          input(type="text", class="input-block-level", value="abc123", name="ApplicationID", id="inputApplicationID", placeholder="Application ID")
+          input(type="text", name="ApplicationSecret",value="ssh-secret",  id="inputApplicationSecret", class="input-block-level", placeholder="Secret")
+
+          p Enter a username and password.
+          input(type="text", class="span2 inputUserName", name="username", id="inputUsername", placeholder="Username")
+          | &nbsp;
+          input(type="password", id="inputPassword", name="password", class="span2 inputPassword", placeholder="Password")
+
+          p Or enter an existing token and secret.
+          input(placeholder="Enter access token", class="span2", id="input_accessToken", name="accessToken", type="text")
+          | &nbsp;
+          input(placeholder="Enter token secret", class="span2", id="input_tokenSecret", name="tokenSecret", type="text")
+          | &nbsp;
+          a(onclick="clearToken();", type="button") Clear
+
+        button(class="btn btn-primary", onclick="getLogin();", type="button") Authenticate
+
+    script(type="text/javascript").
+      function getLogin() {
+
+          var fullURL = location.protocol + '//' + location.host + '/authenticate/accesstoken';
+
+          // TODO: Add validation for AppID and Secret.
+
+          var authParams = {
+            oauth_version: '1.0',
+            oauth_consumer_key: $('#inputApplicationID').val(),
+            oauth_signature_method: 'HMAC-SHA1',
+          };
+
+          var authSigningOptions = {
+            url: fullURL,
+            requestMethod: 'post',
+            consumerSecret: $('#inputApplicationSecret').val()
+          };
+
+          var authParamsObject = authutils.prepareXAuthData(authParams, authSigningOptions);
+
+          var obj = {
+            type:        "Post",
+            url:         fullURL,
+            data:        JSON.stringify({ "username": $('#inputUsername').val(), "password": $('#inputPassword').val() }),
+            contentType: "application/json",
+            dataType:    "json",
+            processData: false,
+            headers:     {},
+            error: function(xhr, textStatus, error) {
+              // return _this.showErrorStatus(xhr, textStatus, error);
+            },
+            success: function(data) {
+
+              // Place the values into local storage.
+              localStorage.setItem('accessToken', data.tokenId);
+              localStorage.setItem('tokenSecret', data.secret);
+
+              // Set the hidden values.
+              $('#input_accessToken').val(data.tokenId);
+              $('#input_tokenSecret').val(data.secret);
+
+              // TODO: Make the UI Update to show that we have a token. Maybe
+              // hide the username and password?
+
+              // return _this.showResponse(data);
+            },
+            complete: function(data) {
+              // return _this.showCompleteStatus(data);
+            }
+          };
+
+          // obj.headers.Authorization = authutils.makeAuthHeaderFromParamsObject(authParamsObject);
+          jQuery.ajax(obj);
+      }
+
+    script(type="text/javascript").
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-32868465-3']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
