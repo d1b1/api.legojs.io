@@ -15,7 +15,6 @@ exports.search = {
     'summary': 'Search Brick Datastore',
     'method': 'GET',
     'params': [
-      // swagger.params.query('term', 'Full Text Search', 'string'),
       swagger.params.query('color', 'Name', 'string'),
       swagger.params.query('designid', 'Design ID', 'string'),
       swagger.params.query('elementid', 'Element ID', 'string'),
@@ -172,7 +171,7 @@ exports.put = {
     'method': 'PUT',
     'params': [
       swagger.params.path('id', 'Brick ID', 'string'),
-      swagger.params.body('body', 'Body', 'Brick' )
+      swagger.params.body('body', 'Body', 'Brick')
     ],
     'responseClass': 'Brick',
     'errorResponses': [

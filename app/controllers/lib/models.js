@@ -1,5 +1,4 @@
 exports.models = {
-
      "TokenRequest":{
       "id": "TokenRequest",
       "properties":{
@@ -13,7 +12,35 @@ exports.models = {
         }
       }
     },
-
+    "Brick":{
+       "id": "Brick",
+       "properties":{
+         "name": {
+           "type": "string",
+           "required": true
+         },
+         "price": {
+           "type": "string",
+           "required": true
+         },
+         "color": {
+           "type": "string",
+           "required": true
+         },
+         "elementId": {
+           "type": "string",
+           "required": true
+         },
+         "designId": {
+           "type": "string",
+           "required": true
+         },
+         "category": {
+           "type": "string",
+           "required": false
+         }
+       }
+    },
     "User":{
       "id": "User",
       "properties":{
@@ -104,35 +131,5 @@ exports.models = {
           "description": "JSON Object with all data from the Provider for the account."
         }
       }
-    },
-   "Brick":{
-      "id": "Brick",
-      "properties":{
-        "name": {
-          "type": "string",
-          "required": true
-        },
-        "price": {
-          "type": "string",
-          "required": true
-        },
-        "color": {
-          "type": "string",
-          "required": true
-        },
-        "elementId": {
-          "type": "string",
-          "required": true
-        },
-        "designId": {
-          "type": "string",
-          "required": true
-        },
-        "category": {
-          "type": "string",
-          "required": false
-        }
-      }
     }
-
   }
