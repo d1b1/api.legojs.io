@@ -19,8 +19,8 @@ var brickSchema = new Schema({
   familyColor:     { type: String, index: true },
   exactColor:      { type: String, index: true },
   category:        { type: String, index: true },
-  price:           { type: String, index: true }
-
+  price:           { type: String, index: true },
+  image:           { type: String }
 }, { collection: 'brick' })
 
 brickSchema.plugin(createdModifiedPlugin, {index: true})
