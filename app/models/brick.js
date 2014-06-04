@@ -2,9 +2,7 @@
 
 var mongoose = require('mongoose')
   , Schema   = mongoose.Schema
-  , _ = require('underscore')
-  // , Queue = require('../../config/queue')
-  // , S3 = require('./middlewares/s3')
+  , _ = require('underscore');
 
 /* Plugins */
 

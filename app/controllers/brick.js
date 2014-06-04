@@ -55,11 +55,17 @@ exports.search = {
       if (req.urlparams[o]) query.where(o).regex(new RegExp(req.urlparams[o], 'i'))
     });
 
-    if (req.urlparams.name) query.where('name').equals(req.urlparams.name)
-    if (req.urlparams.color) query.where('color').equals(req.urlparams.color)
-    if (req.urlparams.cateogry) query.where('category').equals(req.urlparams.category)
-    if (req.urlparams.elementid) query.where('elementId').equals(req.urlparams.elementId)
-    if (req.urlparams.designId) query.where('designId').equals(req.urlparams.designid)
+    // if (req.urlparams.name) query.where('name').equals(req.urlparams.name)
+    // if (req.urlparams.color) query.where('color').equals(req.urlparams.color)
+    // if (req.urlparams.cateogry) query.where('category').equals(req.urlparams.category)
+    // if (req.urlparams.elementid) query.where('elementId').equals(req.urlparams.elementId)
+    // if (req.urlparams.designId) query.where('designId').equals(req.urlparams.designid)
+
+    if (req.urlparams.name) query.where({ name: new RegExp('^' + req.urlparams.name) })
+    if (req.urlparams.color) query.where({ color: new RegExp('^' + req.urlparams.color) })
+    if (req.urlparams.cateogry) query.where({ category: new RegExp('^' + req.urlparams.category) })
+    if (req.urlparams.elementid) query.where({ elementId: new RegExp('^' + req.urlparams.elementid) })
+    if (req.urlparams.designId) query.where({ designId: new RegExp('^' + req.urlparams.designid) })
 
     var options = {
       perPage: req.urlparams.size || 10,
@@ -67,20 +73,14 @@ exports.search = {
       page   : req.urlparams.page > 0 ? req.urlparams.page : 0
     }
 
-    query.lean()
+    query.lean();
     query.paginate(options, function(err, data) {
       if (err)
         return res.json(500, err)
 
-      _.each(data.results, function(i) {
-        if (_.contains(fav_ids, i._id.toString())) {
-          i._user_favorite = _.find(favs, function(o) { return o.typeid.toString() == i._id.toString() })
-        }
-      })
-
       data._conditions = query._conditions
       res.json(200, data)
-    })
+    });
 
   }
 }
@@ -198,17 +198,17 @@ exports.put = {
 
       brick = _.extend(brick, req.body)
 
-      if (Brick.isModified()) {
+      if (brick.isModified()) {
 
-        Brick.save(req, function (err) {
+        brick.save(function (err) {
           if (err)
             return res.json(err.http_code || 500, err)
 
-          res.json(200, Brick.toObject() )
+          res.json(200, brick.toObject() )
         })
 
       } else {
-        res.json(200, Brick.toObject() )
+        res.json(200, brick.toObject() )
       }
     })
   }
@@ -237,11 +237,11 @@ exports.post = {
 
     var brick = new Brick(req.body)
 
-    Brick.save(req, function(err) {
+    brick.save(function(err) {
       if (err)
         return res.json(500, err)
 
-      res.json(200, Brick.toObject())
+      res.json(200, brick.toObject())
     })
 
   }
