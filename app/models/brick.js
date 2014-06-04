@@ -21,6 +21,7 @@ var brickSchema = new Schema({
   category:        { type: String, index: true },
   price:           { type: String, index: true },
   image:           { type: String }
+
 }, { collection: 'brick' })
 
 brickSchema.plugin(createdModifiedPlugin, {index: true})
