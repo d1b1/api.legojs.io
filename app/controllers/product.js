@@ -9,10 +9,10 @@ var swagger = require('swagger-node-express')
 
 exports.search = {
   'spec': {
-    'description': 'Search Kits',
-    'path': '/kit/search',
-    'notes': 'Full text kit search.',
-    'summary': 'Search Kit Datastore',
+    'description': 'Search Products',
+    'path': '/product/search',
+    'notes': 'Full text Product search.',
+    'summary': 'Search Product Datastore',
     'method': 'GET',
     'params': [
       swagger.params.query('id', 'Product ID', 'string'),
