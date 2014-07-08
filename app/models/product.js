@@ -14,7 +14,7 @@ var createdModifiedPlugin = require('mongoose-createdmodified').createdModifiedP
 var productSchema = new Schema({
   name:            { type: String, required: true, index: true },
   productId:       { type: String, true: true, index: true },
-  pdf_Url:         { type: String },
+  pdf_Url:         [ String ],
   theme:           { type: String, index: true },
   year:            { type: String, index: true },
   version:         { type: String, index: true },
