@@ -15,10 +15,9 @@ exports.search = {
     'summary': 'Search Product Datastore',
     'method': 'GET',
     'params': [
-      swagger.params.query('id', 'Product ID', 'string'),
+      swagger.params.query('productId', 'Product ID', 'string'),
       swagger.params.query('numOfPieces', 'Number of Pieces', 'string'),
       swagger.params.query('name', 'Name', 'string'),
-      swagger.params.query('category', 'Category', 'string'),
       //
       swagger.params.query('page', 'Optional - Current Page', 'string'),
       swagger.params.query('size', 'Optional - Page Size', 'string'),
@@ -48,13 +47,13 @@ exports.search = {
     if (req.urlparams.limit)
       query.limit( req.urlparams.limit || 10 )
 
-    var f = 'name,category,color,designId,elementId'
+    var f = 'name,pdf_Url,productId'
     _.each(f.split(','), function(o) {
       if (req.urlparams[o]) query.where(o).regex(new RegExp(req.urlparams[o], 'i'))
     });
 
+    if (req.urlparams.productId) query.where({ productId: req.urlparams.productId })
     if (req.urlparams.name) query.where({ name: new RegExp('^' + req.urlparams.name) })
-    if (req.urlparams.color) query.where({ color: new RegExp('^' + req.urlparams.color) })
 
     var options = {
       perPage: req.urlparams.size || 10,
