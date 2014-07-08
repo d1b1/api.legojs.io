@@ -18,6 +18,8 @@ exports.search = {
       swagger.params.query('productId', 'Product ID', 'string'),
       swagger.params.query('numOfPieces', 'Number of Pieces', 'string'),
       swagger.params.query('name', 'Name', 'string'),
+      swagger.params.query('theme', 'Theme Name', 'string'),
+      swagger.params.query('themeCode', 'Theme Code', 'string'),
       //
       swagger.params.query('page', 'Optional - Current Page', 'string'),
       swagger.params.query('size', 'Optional - Page Size', 'string'),
@@ -54,6 +56,8 @@ exports.search = {
 
     if (req.urlparams.productId) query.where({ productId: req.urlparams.productId })
     if (req.urlparams.name) query.where({ name: new RegExp('^' + req.urlparams.name) })
+    if (req.urlparams.theme) query.where({ theme: new RegExp('^' + req.urlparams.theme) })
+    if (req.urlparams.themeCode) query.where({ themeCode: new RegExp('^' + req.urlparams.themeCode) })
 
     var options = {
       perPage: req.urlparams.size || 10,

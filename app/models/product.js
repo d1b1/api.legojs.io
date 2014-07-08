@@ -16,6 +16,7 @@ var productSchema = new Schema({
   productId:       { type: String, true: true, index: true },
   pdf_Url:         [ String ],
   theme:           { type: String, index: true },
+  themeCode:       { type: String, index: true },
   year:            { type: String, index: true },
   version:         { type: String, index: true },
   numOfPieces:     { type: String },
