@@ -239,6 +239,40 @@ exports.post = {
   }
 }
 
+exports.pieces = {
+  'spec': {
+    'description': 'Product Pieces',
+    'path': '/product/{id}/pieces',
+    'notes': 'Get all product pieces.',
+    'summary': 'Get Product Pieces',
+    'method': 'GET',
+    'params': [
+      swagger.params.path('id', 'Product ID', 'string')
+    ],
+    'errorResponses': [
+      errors.invalid('id'),
+      errors.notFound('Product')
+    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', {session: false})
+    // ],
+    'nickname': 'pieces'
+  },
+  'action': function (req, res) {
+
+    req.assert('id', 'Invalid Product ID').isObjectID()
+    if (req.validationErrors()) throw swagger.params.invalid('input', errors)
+
+    Product.findOne({ _id : req.params.id }).populate('manifest.brick')
+      .exec(function(err, product) {
+        if (err || !product)
+          return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
+
+        res.json(200, product)
+      })
+  }
+}
+
 exports.addPiece = {
   'spec': {
     'description': 'Add a Piece',
@@ -254,9 +288,9 @@ exports.addPiece = {
       errors.invalid('id'),
       errors.notFound('Product')
     ],
-    'preliminaryCallbacks': [
-      passport.authenticate('token', {session: false})
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', {session: false})
+    // ],
     'nickname': 'addPiece'
   },
   'action': function (req, res) {
