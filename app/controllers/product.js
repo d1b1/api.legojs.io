@@ -242,12 +242,12 @@ exports.post = {
 exports.addPiece = {
   'spec': {
     'description': 'Add a Piece',
-    'path': '/product/{productid}/piece',
+    'path': '/product/{id}/piece',
     'notes': 'Adds a piece to a product.',
     'summary': 'Associate a link',
     'method': 'POST',
     'params': [
-      swagger.params.path('productid', 'Product ID', 'string'),
+      swagger.params.path('id', 'Product ID', 'string'),
       swagger.params.body('body', 'Piece Data', 'string')
     ],
     'errorResponses': [
@@ -261,10 +261,10 @@ exports.addPiece = {
   },
   'action': function (req, res) {
 
-    req.assert('productid', 'Invalid Product ID').isObjectID()
+    req.assert('id', 'Invalid Product ID').isObjectID()
     if (req.validationErrors()) throw swagger.params.invalid('input', errors)
 
-    Product.load(req.params.productid, function(err, product) {
+    Product.load(req.params.id, function(err, product) {
       if (err || !product)
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
@@ -286,12 +286,12 @@ exports.addPiece = {
 exports.removePiece = {
   'spec': {
     'description': 'Remove a Product Piece',
-    'path': '/product/{productid}/piece/{brickid}',
+    'path': '/product/{id}/piece/{brickid}',
     'notes': 'Remove a piece from a product.',
     'summary': 'Remove a Product Piece',
     'method': 'DELETE',
     'params': [
-      swagger.params.path('productid', 'Product ID', 'string'),
+      swagger.params.path('id', 'Product ID', 'string'),
       swagger.params.path('brickid', 'Piece/Brick ID', 'string')
     ],
     'errorResponses': [
@@ -305,10 +305,10 @@ exports.removePiece = {
   },
   'action': function (req, res) {
 
-    req.assert('productid', 'Invalid Product ID').isObjectID()
+    req.assert('id', 'Invalid Product ID').isObjectID()
     if (req.validationErrors()) throw swagger.params.invalid('input', errors)
 
-    Product.load(req.params.productid, function(err, product) {
+    Product.load(req.params.id, function(err, product) {
       if (err || !product)
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
@@ -335,12 +335,12 @@ exports.removePiece = {
 exports.updatePiece = {
   'spec': {
     'description': 'Update a Product Piece',
-    'path': '/product/{productid}/piece/{brickid}',
+    'path': '/product/{id}/piece/{brickid}',
     'notes': 'Update a product piece.',
     'summary': 'Update Product Piece',
     'method': 'PUT',
     'params': [
-      swagger.params.path('productid', 'Product ID', 'string'),
+      swagger.params.path('id', 'Product ID', 'string'),
       swagger.params.path('brickid', 'Brick ID', 'string'),
       swagger.params.body('body', 'Piece to Update', 'string')
     ],
@@ -355,10 +355,10 @@ exports.updatePiece = {
   },
   'action': function(req, res) {
 
-    req.assert('productid', 'Invalid Object ID').isObjectID()
+    req.assert('id', 'Invalid Object ID').isObjectID()
     if (req.validationErrors()) throw swagger.params.invalid('input', errors)
 
-    Product.load(req.params.productid, function(err, product) {
+    Product.load(req.params.id, function(err, product) {
       if (err || !product)
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
