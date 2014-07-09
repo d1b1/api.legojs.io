@@ -238,3 +238,146 @@ exports.post = {
 
   }
 }
+
+exports.addPiece = {
+  'spec': {
+    'description': 'Add a Piece',
+    'path': '/product/{id}/piece',
+    'notes': 'Adds a piece to a product.',
+    'summary': 'Associate a link',
+    'method': 'POST',
+    'params': [
+      swagger.params.path('id', 'Product ID', 'string'),
+      swagger.params.body('body', 'Piece Data', 'string')
+    ],
+    'errorResponses': [
+      errors.invalid('id'),
+      errors.notFound('Product')
+    ],
+    'preliminaryCallbacks': [
+      passport.authenticate('token', {session: false})
+    ],
+    'nickname': 'addPiece'
+  },
+  'action': function (req, res) {
+
+    req.assert('productid', 'Invalid Product ID').isObjectID()
+    if (req.validationErrors()) throw swagger.params.invalid('input', errors)
+
+    Product.load(req.params.productid, function(err, product) {
+      if (err || !product)
+        return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
+
+      var piece = product.manifest.create(req.body);
+      product.manifest.push(piece)
+
+      product.save(req, function(err) {
+        if (err)
+          return res.json(err.http_code || 500, err)
+
+        return res.json(200, piece)
+      })
+
+    })
+
+  }
+}
+
+exports.removePiece = {
+  'spec': {
+    'description': 'Remove a Product Piece',
+    'path': '/product/{productid}/piece/{id}',
+    'notes': 'Remove a piece from a product.',
+    'summary': 'Remove a Product Piece',
+    'method': 'DELETE',
+    'params': [
+      swagger.params.path('productid', 'Product ID', 'string'),
+      swagger.params.path('brickid', 'Piece/Brick ID', 'string')
+    ],
+    'errorResponses': [
+      errors.invalid('id'),
+      errors.notFound('Product')
+    ],
+    'preliminaryCallbacks': [
+      passport.authenticate('token', {session: false })
+    ],
+    'nickname': 'removePiece'
+  },
+  'action': function (req, res) {
+
+    req.assert('productid', 'Invalid Product ID').isObjectID()
+    if (req.validationErrors()) throw swagger.params.invalid('input', errors)
+
+    Product.load(req.params.productid, function(err, product) {
+      if (err || !product)
+        return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
+
+      var piece = _.find(product['manifest'], function(o) { return o._id.toString() == req.urlparams.brick })
+      if (piece)  product['manifest'].id(piece._id.toString()).remove()
+
+      if (!product.isModified())
+        return res.json(404, req.urlparams.type + ' found not be found.')
+
+      if (product.isModified()) {
+        product.save(req, function(err) {
+          if (err)
+            return res.json(err.http_code || 500, err)
+
+          return res.json(200, 'Removed Link')
+        })
+      }
+
+    })
+
+  }
+}
+
+exports.updatePiece = {
+  'spec': {
+    'description': 'Update a Product Piece',
+    'path': '/product/{productid}/piece/{id}',
+    'notes': 'Update a product piece.',
+    'summary': 'Update Product Piece',
+    'method': 'PUT',
+    'params': [
+      swagger.params.path('proudctid', 'Product ID', 'string'),
+      swagger.params.body('body', 'Piece to Update', 'string')
+    ],
+    'errorResponses': [
+      errors.invalid('id'),
+      errors.notFound('Product')
+    ],
+    'preliminaryCallbacks': [
+      passport.authenticate('token', {session: false})
+    ],
+    'nickname': 'updatePiece'
+  },
+  'action': function(req, res) {
+
+    req.assert('productid', 'Invalid Object ID').isObjectID()
+    if (req.validationErrors()) throw swagger.params.invalid('input', errors)
+
+    Product.load(req.params.productid, function(err, product) {
+      if (err || !product)
+        return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
+
+      var piece = _.find(product['manifest'], function(o) { return o._id.toString() == req.body.brick })
+
+      if (piece) {
+         var piece = product.manifest.id(piece._id.toString())
+         piece = _.extend(piece, req.body)
+      }
+
+      if (product.isModified()) {
+        product.save(req, function(err) {
+          if (err)
+            return res.json(err.http_code || 500, err)
+
+          return res.json(200, sub)
+        })
+      } else
+        return res.json(200, 'No Change Needed')
+    })
+
+  }
+}
