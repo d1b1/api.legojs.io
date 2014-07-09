@@ -242,12 +242,12 @@ exports.post = {
 exports.addPiece = {
   'spec': {
     'description': 'Add a Piece',
-    'path': '/product/{id}/piece',
+    'path': '/product/{productid}/piece',
     'notes': 'Adds a piece to a product.',
     'summary': 'Associate a link',
     'method': 'POST',
     'params': [
-      swagger.params.path('id', 'Product ID', 'string'),
+      swagger.params.path('productid', 'Product ID', 'string'),
       swagger.params.body('body', 'Piece Data', 'string')
     ],
     'errorResponses': [
@@ -286,7 +286,7 @@ exports.addPiece = {
 exports.removePiece = {
   'spec': {
     'description': 'Remove a Product Piece',
-    'path': '/product/{productid}/piece/{id}',
+    'path': '/product/{productid}/piece/{brickid}',
     'notes': 'Remove a piece from a product.',
     'summary': 'Remove a Product Piece',
     'method': 'DELETE',
@@ -335,12 +335,13 @@ exports.removePiece = {
 exports.updatePiece = {
   'spec': {
     'description': 'Update a Product Piece',
-    'path': '/product/{productid}/piece/{id}',
+    'path': '/product/{productid}/piece/{brickid}',
     'notes': 'Update a product piece.',
     'summary': 'Update Product Piece',
     'method': 'PUT',
     'params': [
-      swagger.params.path('proudctid', 'Product ID', 'string'),
+      swagger.params.path('productid', 'Product ID', 'string'),
+      swagger.params.path('brickid', 'Brick ID', 'string'),
       swagger.params.body('body', 'Piece to Update', 'string')
     ],
     'errorResponses': [
