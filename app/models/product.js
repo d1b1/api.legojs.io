@@ -11,6 +11,11 @@ var createdModifiedPlugin = require('mongoose-createdmodified').createdModifiedP
 
 /* Schemas */
 
+var pieceSchema = new Schema({
+  count:        { type: Number, default: 0 },
+  brick:        { type: Schema.Types.ObjectId, ref: 'Brick', required: true }
+})
+
 var productSchema = new Schema({
   name:            { type: String, required: true, index: true },
   productId:       { type: String, true: true, index: true },
@@ -20,8 +25,8 @@ var productSchema = new Schema({
   year:            { type: String, index: true },
   version:         { type: String, index: true },
   numOfPieces:     { type: String },
-  image:           { type: String }
-
+  image:           { type: String },
+  manifest:        [ pieceSchema ]
 }, { collection: 'product' })
 
 productSchema.plugin(createdModifiedPlugin, {index: true})
