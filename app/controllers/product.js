@@ -302,6 +302,14 @@ exports.addPiece = {
       if (err || !product)
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
+      var piece = _.find(product['manifest'], function(o) { return o.brick.toString() == req.body.brick })
+
+      // If the brick is already in the product then return the piece. We do not allow
+      // duplicates.
+      if (piece) {
+        return res.json(200, piece);
+      }
+
       var piece = product.manifest.create(req.body);
       product.manifest.push(piece)
 
@@ -311,9 +319,7 @@ exports.addPiece = {
 
         return res.json(200, piece)
       })
-
     })
-
   }
 }
 
@@ -332,9 +338,9 @@ exports.removePiece = {
       errors.invalid('id'),
       errors.notFound('Product')
     ],
-    'preliminaryCallbacks': [
-      passport.authenticate('token', {session: false })
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', {session: false })
+    // ],
     'nickname': 'removePiece'
   },
   'action': function (req, res) {
@@ -346,18 +352,24 @@ exports.removePiece = {
       if (err || !product)
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
-      var piece = _.find(product['manifest'], function(o) { return o._id.toString() == req.urlparams.brick })
-      if (piece)  product['manifest'].id(piece._id.toString()).remove()
+      // First look for a brick that the Id.
+      var piece = _.find(product['manifest'], function(o) { return o.brick.toString() == req.params.brickid })
+
+      // Second look for a piece Ids with the id.
+      if (!piece)
+        var piece = _.find(product['manifest'], function(o) { return o._id.toString() == req.params.brickid })
+
+      if (piece) product['manifest'].id(piece._id.toString()).remove()
 
       if (!product.isModified())
-        return res.json(404, req.urlparams.type + ' found not be found.')
+        return res.json(404, 'Brick cound not be found in manifest.')
 
       if (product.isModified()) {
         product.save(req, function(err) {
           if (err)
             return res.json(err.http_code || 500, err)
 
-          return res.json(200, 'Removed Link')
+          return res.json(200, 'Brick Removed from Product.')
         })
       }
 
@@ -369,22 +381,22 @@ exports.removePiece = {
 exports.updatePiece = {
   'spec': {
     'description': 'Update a Product Piece',
-    'path': '/product/{id}/piece/{brickid}',
-    'notes': 'Update a product piece.',
+    'path': '/product/{id}/piece',
+    'notes': 'Update a Product Piece.',
     'summary': 'Update Product Piece',
     'method': 'PUT',
     'params': [
       swagger.params.path('id', 'Product ID', 'string'),
-      swagger.params.path('brickid', 'Brick ID', 'string'),
+      // swagger.params.path('brickid', 'Brick ID', 'string'),
       swagger.params.body('body', 'Piece to Update', 'string')
     ],
     'errorResponses': [
       errors.invalid('id'),
       errors.notFound('Product')
     ],
-    'preliminaryCallbacks': [
-      passport.authenticate('token', {session: false})
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', {session: false})
+    // ],
     'nickname': 'updatePiece'
   },
   'action': function(req, res) {
@@ -396,7 +408,13 @@ exports.updatePiece = {
       if (err || !product)
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
+      // First check by piece Id
       var piece = _.find(product['manifest'], function(o) { return o._id.toString() == req.body.brick })
+
+      // Second check by Brick Id.
+      if (!piece) {
+        var piece = _.find(product['manifest'], function(o) { return o.brick.toString() == req.body.brick })
+      }
 
       if (piece) {
          var piece = product.manifest.id(piece._id.toString())
@@ -404,14 +422,13 @@ exports.updatePiece = {
       }
 
       if (product.isModified()) {
-        product.save(req, function(err) {
+        product.save(function(err) {
           if (err)
             return res.json(err.http_code || 500, err)
-
-          return res.json(200, sub)
+          return res.json(200, piece)
         })
       } else
-        return res.json(200, 'No Change Needed')
+        return res.json(200, piece)
     })
 
   }
