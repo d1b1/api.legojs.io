@@ -465,11 +465,20 @@ exports.getPiece = {
           return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
         // First look for a brick that the Id.
-        var piece = _.find(product['manifest'], function(o) { return o.brick.toString() == req.params.brickid })
+        var piece = _.find(product['manifest'], function(o) {
+          if (o.brick && o.brick._id) {
+            return o.brick._id.toString() == req.params.brickid;
+          }
+        })
 
         // Second look for a piece Ids with the id.
-        if (!piece)
-          var piece = _.find(product['manifest'], function(o) { return o._id.toString() == req.params.brickid })
+        if (!piece) {
+          var piece = _.find(product['manifest'], function(o) {
+            if (o.brick && o.brick._id) {
+              return o.brick._id.toString() == req.params.brickid;
+            }
+          });
+        }
 
         return res.json(200, 'Brick Removed from Product.')
 
