@@ -420,15 +420,22 @@ exports.updatePiece = {
         })
       }
 
+      console.log('the Piece', piece);
       if (piece) {
          var piece = product.manifest.id(piece._id.toString())
-         piece = _.extend(piece, { count: req.body.count || 1 } )
+
+         console.log('The peice to update.');
+         piece.count = 102;
+
+         console.log('dddddd', piece);
+         // piece = _.extend(piece, { count: req.body.count || 1 } )
       }
 
       if (product.isModified()) {
         product.save(function(err) {
           if (err)
             return res.json(err.http_code || 500, err)
+            
           return res.json(200, piece)
         })
       } else
