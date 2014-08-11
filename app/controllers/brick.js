@@ -18,10 +18,9 @@ exports.search = {
       swagger.params.query('color', 'Name', 'string'),
       swagger.params.query('designid', 'Design ID', 'string'),
       swagger.params.query('elementid', 'Element ID', 'string'),
-      swagger.params.query('price', 'Price', 'string'),
       swagger.params.query('name', 'Name', 'string'),
       swagger.params.query('category', 'Category', 'string'),
-      //
+      // Paging.
       swagger.params.query('page', 'Optional - Current Page', 'string'),
       swagger.params.query('size', 'Optional - Page Size', 'string'),
       swagger.params.query('fields', 'Fields to return in the results (Required for Format = Statictics)', 'string'),
@@ -50,22 +49,11 @@ exports.search = {
     if (req.urlparams.limit)
       query.limit( req.urlparams.limit || 10 )
 
-    var f = 'name,category,color,designId,elementId'
-    _.each(f.split(','), function(o) {
-      if (req.urlparams[o]) query.where(o).regex(new RegExp(req.urlparams[o], 'i'))
-    });
-
-    // if (req.urlparams.name) query.where('name').equals(req.urlparams.name)
-    // if (req.urlparams.color) query.where('color').equals(req.urlparams.color)
-    // if (req.urlparams.cateogry) query.where('category').equals(req.urlparams.category)
-    // if (req.urlparams.elementid) query.where('elementId').equals(req.urlparams.elementId)
-    // if (req.urlparams.designId) query.where('designId').equals(req.urlparams.designid)
-
-    if (req.urlparams.name) query.where({ name: new RegExp('^' + req.urlparams.name) })
-    if (req.urlparams.color) query.where({ color: new RegExp('^' + req.urlparams.color) })
-    if (req.urlparams.cateogry) query.where({ category: new RegExp('^' + req.urlparams.category) })
-    if (req.urlparams.elementid) query.where({ elementId: new RegExp('^' + req.urlparams.elementid) })
-    if (req.urlparams.designId) query.where({ designId: new RegExp('^' + req.urlparams.designid) })
+    if (req.urlparams.name) query.where({ name: new RegExp(req.urlparams.name, 'i') })
+    if (req.urlparams.color) query.where('color').equals( req.urlparams.color )
+    if (req.urlparams.cateogry) query.where('category').equals( req.urlparams.category )
+    if (req.urlparams.elementid) query.where('elementId').equals( req.urlparams.elementid )
+    if (req.urlparams.designid) query.where('designId').equals( req.urlparams.designid )
 
     var options = {
       perPage: req.urlparams.size || 10,
