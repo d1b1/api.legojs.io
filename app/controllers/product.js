@@ -480,9 +480,7 @@ exports.getPiece = {
           });
         }
 
-        return res.json(200, 'Brick Removed from Product.')
-
-        res.json(200, product);
+        res.json(200, piece);
       })
 
   }
