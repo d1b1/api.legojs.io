@@ -365,7 +365,7 @@ exports.removePiece = {
         return res.json(404, 'Brick cound not be found in manifest.')
 
       if (product.isModified()) {
-        product.save(req, function(err) {
+        product.save(function(err) {
           if (err)
             return res.json(err.http_code || 500, err)
 
