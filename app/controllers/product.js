@@ -424,15 +424,9 @@ exports.updatePiece = {
         });
       }
 
-      console.log('the Piece', piece);
       if (piece) {
          var piece = product.manifest.id(piece._id.toString())
-
-         console.log('The peice to update.');
-         piece.count = 102;
-
-         console.log('dddddd', piece);
-         // piece = _.extend(piece, { count: req.body.count || 1 } )
+         piece.count = req.body.count || 1;
       }
 
       if (product.isModified()) {
