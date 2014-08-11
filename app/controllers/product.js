@@ -433,3 +433,48 @@ exports.updatePiece = {
 
   }
 }
+
+exports.getPiece = {
+  'spec': {
+    'description': 'Get a Product Piece',
+    'path': '/product/{id}/piece/{brickid}',
+    'notes': 'Get a Product Piece',
+    'summary': 'Get a Product Piece',
+    'method': 'GET',
+    'params': [
+      swagger.params.path('id', 'Product ID', 'string'),
+      swagger.params.path('brickid', 'Piece/Brick ID', 'string')
+    ],
+    'errorResponses': [
+      errors.invalid('id'),
+      errors.notFound('Product')
+    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', {session: false })
+    // ],
+    'nickname': 'removePiece'
+  },
+  'action': function (req, res) {
+
+    req.assert('id', 'Invalid Product ID').isObjectID()
+    if (req.validationErrors()) throw swagger.params.invalid('input', errors)
+
+    Product.findOne({ _id : req.params.id }).populate('manifest.brick')
+      .exec(function(err, product) {
+        if (err || !product)
+          return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
+
+        // First look for a brick that the Id.
+        var piece = _.find(product['manifest'], function(o) { return o.brick.toString() == req.params.brickid })
+
+        // Second look for a piece Ids with the id.
+        if (!piece)
+          var piece = _.find(product['manifest'], function(o) { return o._id.toString() == req.params.brickid })
+
+        return res.json(200, 'Brick Removed from Product.')
+
+        res.json(200, product);
+      })
+
+  }
+}
