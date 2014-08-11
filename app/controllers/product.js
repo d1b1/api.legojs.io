@@ -313,7 +313,7 @@ exports.addPiece = {
       var piece = product.manifest.create(req.body);
       product.manifest.push(piece)
 
-      product.save(req, function(err) {
+      product.save(function(err) {
         if (err)
           return res.json(err.http_code || 500, err)
 
