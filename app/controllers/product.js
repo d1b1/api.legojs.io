@@ -408,16 +408,20 @@ exports.updatePiece = {
       if (err || !product)
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
-      // First check by piece Id
+      // First look for a brick that the Id.
       var piece = _.find(product['manifest'], function(o) {
-        return o._id.toString() == req.body.brick
+        if (o.brick && o.brick._id) {
+          return o.brick._id.toString() == req.params.brickid;
+        }
       })
 
-      // Second check by Brick Id.
+      // Second look for a piece Ids with the id.
       if (!piece) {
         var piece = _.find(product['manifest'], function(o) {
-          return o.brick.toString() == req.body.brick
-        })
+          if (o._id) {
+            return o._id.toString() == req.params.brickid;
+          }
+        });
       }
 
       console.log('the Piece', piece);
@@ -435,7 +439,7 @@ exports.updatePiece = {
         product.save(function(err) {
           if (err)
             return res.json(err.http_code || 500, err)
-            
+
           return res.json(200, piece)
         })
       } else
