@@ -381,13 +381,13 @@ exports.removePiece = {
 exports.updatePiece = {
   'spec': {
     'description': 'Update a Product Piece',
-    'path': '/product/{id}/piece',
+    'path': '/product/{id}/piece/{brickid}',
     'notes': 'Update a Product Piece.',
     'summary': 'Update Product Piece',
     'method': 'PUT',
     'params': [
       swagger.params.path('id', 'Product ID', 'string'),
-      // swagger.params.path('brickid', 'Brick ID', 'string'),
+      swagger.params.path('brickid', 'Brick ID', 'string'),
       swagger.params.body('body', 'Piece to Update', 'string')
     ],
     'errorResponses': [
@@ -409,16 +409,20 @@ exports.updatePiece = {
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
 
       // First check by piece Id
-      var piece = _.find(product['manifest'], function(o) { return o._id.toString() == req.body.brick })
+      var piece = _.find(product['manifest'], function(o) {
+        return o._id.toString() == req.body.brick
+      })
 
       // Second check by Brick Id.
       if (!piece) {
-        var piece = _.find(product['manifest'], function(o) { return o.brick.toString() == req.body.brick })
+        var piece = _.find(product['manifest'], function(o) {
+          return o.brick.toString() == req.body.brick
+        })
       }
 
       if (piece) {
          var piece = product.manifest.id(piece._id.toString())
-         piece = _.extend(piece, req.body)
+         piece = _.extend(piece, { count: req.body.count || 1 } )
       }
 
       if (product.isModified()) {
