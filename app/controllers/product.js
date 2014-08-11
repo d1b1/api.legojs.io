@@ -474,8 +474,8 @@ exports.getPiece = {
         // Second look for a piece Ids with the id.
         if (!piece) {
           var piece = _.find(product['manifest'], function(o) {
-            if (o.brick && o.brick._id) {
-              return o.brick._id.toString() == req.params.brickid;
+            if (o._id) {
+              return o._id.toString() == req.params.brickid;
             }
           });
         }
