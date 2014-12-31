@@ -646,6 +646,10 @@ exports.addProduct = {
     req.assert('id', 'Invalid User ID').isObjectID()
     if (req.validationErrors()) throw swagger.params.invalid('input', errors)
 
+    if (!req.body.product) {
+      return res.json(404, "No product provided");
+    }
+
     Account.load(req.params.id, function(err, account) {
       if (err || !account)
         return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
