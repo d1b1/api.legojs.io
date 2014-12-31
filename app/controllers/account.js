@@ -624,7 +624,7 @@ exports.put = {
 exports.addProduct = {
   'spec': {
     'description': 'Add a Product',
-    'path': '/user/{id}/product',
+    'path': '/user/{id}/products',
     'notes': 'Adds a product to a user.',
     'summary': 'Associate a link',
     'method': 'POST',
@@ -672,7 +672,7 @@ exports.addProduct = {
 exports.removePiece = {
   'spec': {
     'description': 'Remove a User Product',
-    'path': '/user/{user}/product/{product}',
+    'path': '/user/{user}/products/{product}',
     'notes': 'Remove a piece from a product.',
     'summary': 'Remove a User Product',
     'method': 'DELETE',
