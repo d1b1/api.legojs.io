@@ -29,6 +29,38 @@ exports.current = {
   }
 }
 
+exports.products = {
+  'spec': {
+    'description': 'Get the Current User Products',
+    'path': '/user/{user}/products',
+    'notes': 'This endpoint provides the ability to retrieve the currently authenticated user products & kits',
+    'summary': 'Get Current User Products',
+    'method': 'GET',
+    'params': [
+      swagger.params.path('user', 'User ID', 'string')
+    ],
+    'errorResponses': [],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', { optional: true, session: false })
+    // ],
+    'nickname': 'get'
+  },
+  'action': function (req, res) {
+
+    req.assert('user', 'Invalid Account ID').isObjectID()
+    if (req.validationErrors()) throw swagger.params.invalid('input', errors)
+
+    Account.findOne({ _id : req.params.id }).populate('products')
+      .exec(function(err, account) {
+        if (err || !account)
+          return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
+
+        res.json(200, account.products)
+      }
+    );
+  }
+}
+
 exports.activity = {
   'spec': {
     'description': 'Get a activity',
@@ -148,9 +180,9 @@ exports.search = {
       swagger.params.query('format', 'Type of content returns, Raw, Statistics (Default is Raw)', 'string', false, false, 'LIST[raw,statistics,distinct]', 'raw'),
     ],
     'responseClass': 'User',
-    'preliminaryCallbacks': [
-      passport.authenticate('token', { optional: true, session: false })
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', { optional: true, session: false })
+    // ],
     'errorResponses': [
       errors.invalid('id'),
       errors.notFound('User')
@@ -329,9 +361,9 @@ exports.get = {
       errors.invalid('id'),
       errors.notFound('user')
     ],
-    'preliminaryCallbacks': [
-      passport.authenticate('token', { optional: true, session: false })
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', { optional: true, session: false })
+    // ],
     'nickname': 'get'
   },
   'action': function (req, res) {
@@ -558,9 +590,9 @@ exports.put = {
     'errorResponses': [
       errors.invalid('status')
     ],
-    'preliminaryCallbacks': [
-      passport.authenticate('token', { session: false })
-    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', { session: false })
+    // ],
     'nickname': 'update'
   },
   'action': function (req, res) {
@@ -576,7 +608,7 @@ exports.put = {
 
       if (account.isModified()) {
 
-        account.save(req, function (err) {
+        account.save(function (err) {
           if (err)
             return res.json(err.http_code || 500, err)
 
@@ -585,6 +617,53 @@ exports.put = {
       } else
         res.json(200, account.toObject())
 
+    })
+  }
+}
+
+exports.addProduct = {
+  'spec': {
+    'description': 'Add a Product',
+    'path': '/user/{id}/product',
+    'notes': 'Adds a product to a user.',
+    'summary': 'Associate a link',
+    'method': 'POST',
+    'params': [
+      swagger.params.path('id', 'User ID', 'string'),
+      swagger.params.body('body', 'Product Data', 'string')
+    ],
+    'errorResponses': [
+      errors.invalid('id'),
+      errors.notFound('Product')
+    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', {session: false})
+    // ],
+    'nickname': 'addPiece'
+  },
+  'action': function (req, res) {
+
+    req.assert('id', 'Invalid User ID').isObjectID()
+    if (req.validationErrors()) throw swagger.params.invalid('input', errors)
+
+    Account.load(req.params.id, function(err, account) {
+      if (err || !account)
+        return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
+
+      var product = _.find(account['products'], function(o) { return o.toString() == req.body.product })
+
+      if (product) {
+        return res.json(200, product);
+      }
+
+      account.products.push(req.body.product);
+
+      account.save(req, function(err) {
+        if (err)
+          return res.json(err.http_code || 500, err)
+
+        return res.json(200, req.body.product)
+      })
     })
   }
 }

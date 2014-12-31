@@ -22,6 +22,10 @@ var OauthSchema = new Schema({
 
 OauthSchema.plugin(createdModifiedPlugin, { index: true })
 
+var productSchema = new Schema({
+  product:        { type: Schema.Types.ObjectId, ref: 'Product', required: true }
+})
+
 var AccountSchema = new Schema({
   name:            { type: String, default: '', es_indexed: true, index: true },
   email:           { type: String, default: '', es_indexed: true },
@@ -46,7 +50,8 @@ var AccountSchema = new Schema({
   accountstatus:   { type: String, default: 'new' },
   accounttype:     { type: String, default: 'general' },
   website:         { type: String, es_indexed: true },
-  oauth:           [ OauthSchema ]
+  oauth:           [ OauthSchema ],
+  products:        [ { type: Schema.Types.ObjectId, ref: 'Product', required: true } ]
 
 }, { collection: 'account' })
 
@@ -137,85 +142,85 @@ AccountSchema.pre('save', function(next) {
    Will trigger a geoCoding event on Google Maps API.
 */
 
-AccountSchema.pre('save', function(next, req, callback) {
+// AccountSchema.pre('save', function(next, req, callback) {
 
-  var self = this
+//   var self = this
 
-  // If we have a change to city, state or country
-  if (this.isModified('city') || this.isModified('state') || this.isModified('country')) {
+//   // If we have a change to city, state or country
+//   if (this.isModified('city') || this.isModified('state') || this.isModified('country')) {
 
-    // Loop the possible address fields. And build an address array. Order
-    // is important.
+//     // Loop the possible address fields. And build an address array. Order
+//     // is important.
 
-    var address = []
-    _.each(['city', 'state', 'country'], function(locName) {
-      if (self[locName])
-        address.push(self[locName])
-    })
+//     var address = []
+//     _.each(['city', 'state', 'country'], function(locName) {
+//       if (self[locName])
+//         address.push(self[locName])
+//     })
 
-    GeoCode.fromAddress(address, function(err, location) {
-      if (err)
-        return next(callback)
+//     GeoCode.fromAddress(address, function(err, location) {
+//       if (err)
+//         return next(callback)
 
-      // If we have location, then store the data in
-      // the account document.
+//       // If we have location, then store the data in
+//       // the account document.
 
-      if (location)
-        self.location = {
-          type: 'Point',
-          meta: location.meta,
-          coordinates: [ location.lng, location.lat ]
-        }
+//       if (location)
+//         self.location = {
+//           type: 'Point',
+//           meta: location.meta,
+//           coordinates: [ location.lng, location.lat ]
+//         }
 
-      console.log("GeoCode the User location.")
-      return next(req, callback)
-    })
-  } else {
-    return next(req, callback)
-  }
-})
+//       console.log("GeoCode the User location.")
+//       return next(req, callback)
+//     })
+//   } else {
+//     return next(req, callback)
+//   }
+// })
 
-AccountSchema.pre('save', function(next, req, callback) {
+// AccountSchema.pre('save', function(next, req, callback) {
 
-  if (this.isNew) {
-    // Queue.q.enqueue('newAccount', { id: this._id.toString() }, function(err, job) {
-    //   if (err) throw err
-    //   console.log('Enqueued New Account Email')
-    // })
+//   if (this.isNew) {
+//     // Queue.q.enqueue('newAccount', { id: this._id.toString() }, function(err, job) {
+//     //   if (err) throw err
+//     //   console.log('Enqueued New Account Email')
+//     // })
 
-    return next(callback)
-  }
+//     return next(callback)
+//   }
 
-  // This is hack to allow the indexing to work. If we only
-  // have two arguments, then assume it is because we do not
-  // have the req available.
-  if (arguments.length == 2) {
-    return next(callback)
-  }
+//   // This is hack to allow the indexing to work. If we only
+//   // have two arguments, then assume it is because we do not
+//   // have the req available.
+//   if (arguments.length == 2) {
+//     return next(callback)
+//   }
 
-  // Not now, so we check permissions.
+//   // Not now, so we check permissions.
 
-  var currentId   = req.user.userId.toString()
-  var currentRole = req.authInfo.account.accounttype || 'general'
-  var override = false
+//   var currentId   = req.user.userId.toString()
+//   var currentRole = req.authInfo.account.accounttype || 'general'
+//   var override = false
 
-  /* User must meet at least one of the following criteria:
-   *
-   * 1. User is the current owner of the account.
-   * 2. Account Type of Super User (su)
-   * 3. Override is true
-   */
+//   /* User must meet at least one of the following criteria:
+//    *
+//    * 1. User is the current owner of the account.
+//    * 2. Account Type of Super User (su)
+//    * 3. Override is true
+//    */
 
-  if (this._id.toString() == currentId || currentRole == 'su' || override) {
-    // console.log('Has Permissions = true')
-    next(callback)
-  } else {
-    var error = new Error('No Write Permission')
-    error.http_code = 401
+//   if (this._id.toString() == currentId || currentRole == 'su' || override) {
+//     // console.log('Has Permissions = true')
+//     next(callback)
+//   } else {
+//     var error = new Error('No Write Permission')
+//     error.http_code = 401
 
-    next(error)
-  }
-})
+//     next(error)
+//   }
+// })
 
 
 /* Methods */
