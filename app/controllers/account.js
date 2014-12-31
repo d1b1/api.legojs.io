@@ -50,7 +50,7 @@ exports.products = {
     req.assert('user', 'Invalid Account ID').isObjectID()
     if (req.validationErrors()) throw swagger.params.invalid('input', errors)
 
-    Account.findOne({ _id : req.params.id }).populate('products')
+    Account.findOne({ _id : req.params.user }).populate('products')
       .exec(function(err, account) {
         if (err || !account)
           return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
