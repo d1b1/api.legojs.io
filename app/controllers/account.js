@@ -667,3 +667,50 @@ exports.addProduct = {
     })
   }
 }
+
+
+exports.removePiece = {
+  'spec': {
+    'description': 'Remove a User Product',
+    'path': '/user/{user}/product/{product}',
+    'notes': 'Remove a piece from a product.',
+    'summary': 'Remove a User Product',
+    'method': 'DELETE',
+    'params': [
+      swagger.params.path('user', 'User ID', 'string'),
+      swagger.params.path('product', 'Product ID', 'string')
+    ],
+    'errorResponses': [
+      errors.invalid('id'),
+      errors.notFound('Product')
+    ],
+    // 'preliminaryCallbacks': [
+    //   passport.authenticate('token', {session: false })
+    // ],
+    'nickname': 'removeUserProduct'
+  },
+  'action': function (req, res) {
+
+    req.assert('user', 'Invalid User ID').isObjectID()
+    if (req.validationErrors()) throw swagger.params.invalid('input', errors)
+
+    Account.load(req.params.user, function(err, account) {
+      if (err || !account)
+        return res.json(err ? 500 : 404, err ? err : 'Nothing Found' )
+
+      // First look for a brick that the Id.
+      var product = _.find(account['products'], function(o) { return o.toString() == req.params.product })
+
+      account.products = _.without(account.products, product);
+
+      account.save(req, function(err) {
+        if (err)
+          return res.json(err.http_code || 500, err)
+
+        return res.json(200, 'Product Removed from User.')
+      })
+
+    })
+
+  }
+}
