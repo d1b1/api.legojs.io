@@ -40,6 +40,10 @@ ConsumerSchema.statics = {
   findByKey: function(consumerKey, cb) {
     this.findOne({ consumerKey: consumerKey })
       .exec(function(err, doc) {
+        // If we get nothing, then return a null.
+        if (!doc) return cb(err, doc);
+
+        // Otherwise return a document with the _id removed.
         cb(err, _.omit(doc, '_id'))
       })
   },

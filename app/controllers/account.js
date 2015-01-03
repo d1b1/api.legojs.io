@@ -29,20 +29,20 @@ exports.current = {
   }
 }
 
-exports.products = {
+exports.myProducts = {
   'spec': {
-    'description': 'Get the Current User Products',
+    'description': 'Get the Users Products',
     'path': '/user/{user}/products',
-    'notes': 'This endpoint provides the ability to retrieve the currently authenticated user products & kits',
+    'notes': 'This endpoint provides the ability to retrieve the currently authenticated user products & kits.',
     'summary': 'Get Current User Products',
     'method': 'GET',
     'params': [
       swagger.params.path('user', 'User ID', 'string')
     ],
     'errorResponses': [],
-    // 'preliminaryCallbacks': [
-    //   passport.authenticate('token', { optional: true, session: false })
-    // ],
+    'preliminaryCallbacks': [
+      passport.authenticate('token', { optional: false, session: false })
+    ],
     'nickname': 'get'
   },
   'action': function (req, res) {
@@ -361,9 +361,9 @@ exports.get = {
       errors.invalid('id'),
       errors.notFound('user')
     ],
-    // 'preliminaryCallbacks': [
-    //   passport.authenticate('token', { optional: true, session: false })
-    // ],
+    'preliminaryCallbacks': [
+      passport.authenticate('token', { optional: true, session: false })
+    ],
     'nickname': 'get'
   },
   'action': function (req, res) {
@@ -403,10 +403,10 @@ exports.post = {
   },
   'action': function (req, res) {
 
-    var account = new Account(req.body)
+    var account = new Account(req.body);
 
     var CreateNow = function() {
-      account.save(req, function (err) {
+      account.save(function (err) {
         if (err)
           return res.json(err.http_code || 500, err)
 
@@ -414,7 +414,6 @@ exports.post = {
         var accessToken = new AccessToken({ userId: account._id })
 
         accessToken.save(function(err) {
-          // TODO: handler error?
 
           a.access = {
             token: accessToken.tokenId,
@@ -590,9 +589,9 @@ exports.put = {
     'errorResponses': [
       errors.invalid('status')
     ],
-    // 'preliminaryCallbacks': [
-    //   passport.authenticate('token', { session: false })
-    // ],
+    'preliminaryCallbacks': [
+      passport.authenticate('token', { session: false })
+    ],
     'nickname': 'update'
   },
   'action': function (req, res) {
@@ -636,9 +635,9 @@ exports.addProduct = {
       errors.invalid('id'),
       errors.notFound('Product')
     ],
-    // 'preliminaryCallbacks': [
-    //   passport.authenticate('token', {session: false})
-    // ],
+    'preliminaryCallbacks': [
+      passport.authenticate('token', {session: false})
+    ],
     'nickname': 'addPiece'
   },
   'action': function (req, res) {
@@ -662,7 +661,7 @@ exports.addProduct = {
 
       account.products.push(req.body.product);
 
-      account.save(req, function(err) {
+      account.save(function(err) {
         if (err)
           return res.json(err.http_code || 500, err)
 
@@ -672,13 +671,12 @@ exports.addProduct = {
   }
 }
 
-
 exports.removePiece = {
   'spec': {
-    'description': 'Remove a User Product',
+    'description': 'Unfollow a Lego Product',
     'path': '/user/{user}/products/{product}',
-    'notes': 'Remove a piece from a product.',
-    'summary': 'Remove a User Product',
+    'notes': 'Unfollow a Lego Product',
+    'summary': 'Unfollow a Lego Product',
     'method': 'DELETE',
     'params': [
       swagger.params.path('user', 'User ID', 'string'),
@@ -688,9 +686,9 @@ exports.removePiece = {
       errors.invalid('id'),
       errors.notFound('Product')
     ],
-    // 'preliminaryCallbacks': [
-    //   passport.authenticate('token', {session: false })
-    // ],
+    'preliminaryCallbacks': [
+      passport.authenticate('token', { optional: false, session: false })
+    ],
     'nickname': 'removeUserProduct'
   },
   'action': function (req, res) {
@@ -707,7 +705,7 @@ exports.removePiece = {
 
       account.products = _.without(account.products, product);
 
-      account.save(req, function(err) {
+      account.save(function(err) {
         if (err)
           return res.json(err.http_code || 500, err)
 

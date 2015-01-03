@@ -61,7 +61,8 @@ module.exports = function(passport) {
       verifyConsumer(consumerKey, done, function onVerifySuccess(error, consumer) {     
         if (!consumer) {
           console.log('TODO: Got no consumer')      
-        }     
+        }    
+
         done(null, consumer, consumer.consumerSecret)
       })
 
@@ -188,30 +189,21 @@ module.exports = function(passport) {
   // to the function.
 
   // Here, successCallback's second param will be the consumer object.
+
   function verifyConsumer(consumerKey, passportDone, successCallback) {
 
     Consumer.findByKey(consumerKey, function(err, consumer) {
         if (err) return passportDone(err)
 
         if (!consumer) {
-          passportDone(null, false)
+          console.log('No Consumer Found in the Consumer Collection.');
+          passportDone(null, false);
         } else {
-          successCallback(null, consumer)     
+          console.log('Found a valid Consumer');
+          successCallback(null, consumer);   
         }
 
-    })
-
-    // store.findConsumerByKey(consumerKey, function(error, consumer) {    
-    //   if (error) { 
-    //     passportDone(error)
-    //   }
-    //   if (!consumer) {
-    //     passportDone(null, false)
-    //   }
-    //   else {
-    //     successCallback(null, consumer)    
-    //   }
-    // })
+    });
 
   }
 

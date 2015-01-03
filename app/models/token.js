@@ -17,7 +17,7 @@ var Makeuid = function(len) {
     buf.push(chars[getRandomInt(0, charlen - 1)])
   }
 
-  return buf.join('')
+  return buf.join('');
 }
 
 /* Schema */
@@ -26,7 +26,7 @@ var TokenSchema = new mongoose.Schema({
   tokenId:        { type: String, default: '', index: true }, 
   secret:         { type: String, default: '' },
   userId:         String
-}, { collection: 'accessTokens' })
+}, { collection: 'accessTokens' });
 
 TokenSchema.plugin(createdModifiedPlugin, {index: true})
 
@@ -54,6 +54,7 @@ TokenSchema.statics = {
    * @param {ObjectId} id
    * @param {Function} cb
    * @api private
+   *
    */
 
   load: function (id, cb) {
@@ -66,4 +67,4 @@ TokenSchema.statics = {
 
 }
 
-mongoose.model('AccessToken', TokenSchema)
+mongoose.model('AccessToken', TokenSchema);

@@ -32,6 +32,10 @@ exports.accesstoken = {
   },
   'action': function(req, res) {
 
+    // TODO: If there is an active token then use it.
+    // other wise we are supporting multiple logins. Sincel
+    // token will allow us to log a user out.
+
     var token = new AccessToken();
     token.userId = req.authInfo._id 
 
